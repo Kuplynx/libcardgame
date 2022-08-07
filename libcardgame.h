@@ -47,20 +47,24 @@ typedef struct {
     int size;
 } HAND;
 
+
 /* Card related functions */
 
 void *get_hand(HAND* hand, int num_cards);
 
+void *remove_card(HAND* hand, int index);
+
+void *card_choice(HAND *hand, HAND *result, int num_cards, int cur_choice);
+
 /* Initialize and destroy game and all related components */
 
-void *init_game(void);
+void *init_game(char* msg);
 
 void *destroy_game(void);
 
 /* Game and UI functions */
 
-/* Use asprintf() or equivalent to format */
-void *gprint(card_position side, char* msg);
+void *gprint(card_position side, char* _msg, ...);
 
 
 #endif // !LIBCARDGAME
