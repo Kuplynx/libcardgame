@@ -1,25 +1,54 @@
-#include "../../libcardgame.h"
+#include <string.h>
 
-int main(void) 
+#include "threebats.h"
+
+GAME init_threebats()
 {
-    init_game("Three Bats!");
-    HAND pfdc;
-    get_hand(&pfdc, 3);
-    HAND dfdc;
-    get_hand(&dfdc, 3);
-    HAND ph;
-    get_hand(&ph, 6);
-    HAND dh;
-    get_hand(&dh, 6);
-    gprint(PLAYER_SIDE, "%s, %s, %s, %s, %s, %s", 
-    ph.cards[0].name, 
-    ph.cards[1].name,
-    ph.cards[2].name,
-    ph.cards[3].name,
-    ph.cards[4].name,
-    ph.cards[5].name);
-    HAND pfuc;
-    card_choice(&ph, &pfuc, 3, 2);
+    GAME __game;
+    __game.dealer_facedown = (HAND *)malloc(sizeof(HAND));
+    __game.dealer_faceup = (HAND *)malloc(sizeof(HAND));
+    __game.dealer_hand = get_hand(6);
+    __game.player_facedown = (HAND *)malloc(sizeof(HAND));
+    __game.player_faceup = (HAND *)malloc(sizeof(HAND));
+    __game.player_hand = get_hand(6);
+    return __game;
+}
+
+void delete_threebats(GAME *game)
+{
+    delete_hand(game->dealer_facedown);
+    delete_hand(game->dealer_faceup);
+    delete_hand(game->dealer_hand);
+    delete_hand(game->player_facedown);
+    delete_hand(game->player_faceup);
+    delete_hand(game->player_hand);
+}
+
+void print_hand(const HAND *hand)
+{
+    if (hand != NULL)
+    {
+        int screenHeight, screenWidth;
+        getmaxyx(stdscr, screenHeight, screenWidth);
+
+        int startY = (screenHeight - hand->size) / 2;
+
+        for (int i = 0; i < hand->size; i++)
+        {
+            int nameLength = strlen(hand->cards[i].name);
+            int startX = (screenWidth - nameLength) / 2;
+
+            mvprintw(startY + i, startX, "%s", hand->cards[i].name);
+        }
+    }
+}
+
+int main(void)
+{
+    GAME game = init_threebats();
+    init_game("Three Bats");
+    print_hand(game.player_hand);
     getch();
     destroy_game();
-}   
+    delete_threebats(&game);
+}
