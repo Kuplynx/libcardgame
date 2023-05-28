@@ -54,3 +54,7 @@ dkms.conf
 # Editor files
 .idea
 .vscode
+
+# Other
+tests
+examples/threebats/threebats

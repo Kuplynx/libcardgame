@@ -264,7 +264,7 @@ CARD *get_random_card(void)
 void *init_game(char *msg)
 {
         setlocale(LC_ALL, "");
-        srand(time(NULL));
+        srand(time(NULL) * 2*32 / 1.3134568734985);
         initscr();
         keypad(stdscr, TRUE);
         start_color();
@@ -286,17 +286,36 @@ void *destroy_game(void)
         endwin();
 }
 
-void *get_hand(HAND *hand, int num_cards)
+HAND *get_hand(int num_cards)
 {
-        CARD _cards[num_cards];
+        HAND *__hand = malloc(sizeof(HAND));
+        if (__hand == NULL)
+                return NULL;
+        __hand->size = num_cards;
+
+        CARD *__cards = malloc(num_cards * sizeof(CARD));
+        if (__cards == NULL)
+        {
+                free(__hand);
+                return NULL;
+        }
+
         for (int i = 0; i < num_cards; i++)
         {
-                _cards[i] = *get_random_card();
+                __cards[i] = *get_random_card();
         }
-        HAND _hand = {
-            .cards = _cards,
-            .size = num_cards};
-        memcpy(hand, &_hand, sizeof(HAND));
+        __hand->cards = __cards;
+        return __hand;
+}
+
+
+void delete_hand(HAND *hand)
+{
+        if (hand != NULL)
+        {
+                free(hand->cards);
+                free(hand);
+        }
 }
 
 void *remove_card(HAND *hand, int index)
@@ -310,7 +329,7 @@ void *remove_card(HAND *hand, int index)
 
 void *gprint(card_position side, char *_msg, ...)
 {
-        char *msg;
+        char *msg = "Unknown error occured!";
         va_list args;
         va_start(args, _msg);
         vasprintf(&msg, _msg, args);
@@ -340,8 +359,9 @@ void *gprint(card_position side, char *_msg, ...)
 
 void *card_choice(HAND *hand, HAND *result, int num_cards, int cur_choice)
 {
+        HAND _hand = *hand;
         clear();
         attron(COLOR_PAIR(1));
-        gprint(PLAYER_SIDE, "the %c", hand->cards[0].name);
+        gprint(PLAYER_SIDE, "the %c", _hand.size);
         attroff(COLOR_PAIR(1));
 }
