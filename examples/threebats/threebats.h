@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "../../libcardgame.h"
 
 #define PLAYER_TURN 0
@@ -13,3 +15,9 @@ typedef struct
     HAND *player_hand;
 
 } GAME;
+
+void threebats_gprint(bool player, bool bat, char *_msg, ...);
+
+void threebats_print_hand(bool player, bool bat, HAND *hand);
+
+bool threebats_loop(GAME *game);

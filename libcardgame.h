@@ -60,7 +60,7 @@ void delete_hand(HAND *hand);
 
 void *remove_card(HAND *hand, int index);
 
-void *card_choice(HAND *hand, HAND *result, int num_cards, int cur_choice);
+void *card_choice(HAND *hand, HAND *result, int num_cards);
 
 /* Initialize and destroy game and all related components */
 
