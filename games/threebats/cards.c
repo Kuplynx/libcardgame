@@ -8,9 +8,17 @@ void threebats_gprint(bool player, bool bat, bool msg, char *_msg, ...)
     va_start(args, _msg);
     int row, col;
     getmaxyx(stdscr, row, col);
+
     if (player)
     {
         row = bat ? row - 2 : row - 3;
+        row = msg ? row - 1 : row;
+        if (bat)
+            row -= 2;
+        if (msg)
+            row -= 1;
+        else
+            row -= 3;
         mvprintw(row, (col - strlen(_msg)) / 2, _msg, args);
     }
     else
@@ -44,5 +52,5 @@ void threebats_print_hand(bool player, bool bat, HAND *hand)
     }
     string[totalLength - 1] = '\0';
 
-    threebats_gprint(player, bat, string);
+    threebats_gprint(player, bat, false, string);
 }

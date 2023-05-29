@@ -9,6 +9,9 @@ GAME threebats_init()
     __game.player_facedown = get_hand(3);
     __game.player_faceup = get_hand(3);
     __game.player_hand = get_hand(6);
+    /* Max number of cards is 52, deck gets the rest so 28 */
+    __game.deck_storage = get_hand(28);
+    __game.deck_faceup = (HAND *)malloc(sizeof(HAND));
     return __game;
 }
 
